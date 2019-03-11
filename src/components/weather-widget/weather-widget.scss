@@ -1,0 +1,77 @@
+@import "../../styles/colors";
+@import "../../styles/global";
+
+/*
+ * Widget variables
+ */
+
+$widget-font-size: 12px;
+$widget-font-size-normal: $widget-font-size;
+$widget-font-size-small: 9px;
+
+.widget-panel {
+  color: $widget-gray-dark;
+  font-size: $widget-font-size;
+  padding: $widget-font-size * 2;
+  box-shadow: 0px 8px 60px 0px rgba(0, 0, 0, 0.75);
+  border-radius: $widget-font-size;
+}
+
+.weather-widget {
+  text-align: center;
+
+  .content {
+    display: flex;
+  }
+
+  .days-content {
+    min-width: 60px;
+
+    .active {
+      background-color: $widget-gray-light;
+    }
+  }
+
+  .hours-content {
+    min-width: 25px;
+    background-color: $widget-gray-light;
+    border-left: 1px solid $widget-gray-normal;
+    border-right: 1px solid $widget-gray-normal;
+
+    &:first-child {
+      border-left: 0;
+    }
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+
+  .hour {
+    font-size: $widget-font-size-small;
+  }
+
+  .icon{
+    width: 64px;
+    height: 64px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    &.cloudy {
+      background-image: url('../../assets/icons/weather/cloudy.png');
+    }
+
+    &.rainy {
+      background-image: url('../../assets/icons/weather/rainy.png');
+    }
+
+    &.snowy {
+      background-image: url('../../assets/icons/weather/snowy.png');
+    }
+
+    &.sunny {
+      background-image: url('../../assets/icons/weather/sunny.png');
+    }
+  }
+}
