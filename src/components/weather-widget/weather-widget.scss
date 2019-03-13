@@ -18,6 +18,7 @@ $widget-font-size-small: 9px;
 }
 
 .weather-widget {
+  width: 320px;
   text-align: center;
 
   .content {
@@ -51,7 +52,7 @@ $widget-font-size-small: 9px;
     font-size: $widget-font-size-small;
   }
 
-  .icon{
+  .icon {
     width: 64px;
     height: 64px;
     display: block;
@@ -75,3 +76,28 @@ $widget-font-size-small: 9px;
     }
   }
 }
+
+.bar-chart {
+  background-color: $widget-gray-light;
+
+  text {
+    text-anchor: middle;
+  }
+
+  .bar{
+    fill: $widget-gray-normal;
+  }
+
+  .labels {
+    font-size: $widget-font-size-small;
+  }
+
+  .grid {
+    line {
+      stroke: $widget-gray-lighter;
+      stroke-width: 2
+    }
+  }
+}
+
+@value widgetGrayNormal #{$widget-gray-normal};
