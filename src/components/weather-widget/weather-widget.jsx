@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import * as d3 from 'd3';
 
 import * as mock from './weather-widget.mock';
-import /*styles from*/ './weather-widget.style.scss';
+import styles from './weather-widget.style.scss';
 
 export const daysAbbreviation = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export const weatherIconHashMap = {
@@ -36,7 +36,7 @@ export default class WeatherWidget extends Component {
 				<ul className="content">
 					{daysContent}
 				</ul>
-				<BarChart width={320} height={160}/>
+				<BarChart width={styles.weatherWidgetWidth} height={160}/>
 			</div>
 		);
 	}

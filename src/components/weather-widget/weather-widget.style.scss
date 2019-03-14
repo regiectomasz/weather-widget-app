@@ -9,16 +9,18 @@ $widget-font-size: 12px;
 $widget-font-size-normal: $widget-font-size;
 $widget-font-size-small: 9px;
 
+$weather-widget-width: 320;
+
 .widget-panel {
   padding: $widget-font-size * 2;
   color: $widget-gray-dark;
   font-size: $widget-font-size;
-  box-shadow: 0 8px 60px 0 rgba(0, 0, 0, .75);
+  box-shadow: 0 8px 60px 0 $widget-gray-normal;
   border-radius: $widget-font-size;
 }
 
 .weather-widget {
-  width: 320px;
+  width: $weather-widget-width + px;
   text-align: center;
 
   .content {
@@ -111,4 +113,4 @@ $widget-font-size-small: 9px;
   }
 }
 
-@value widgetGrayNormal #{$widget-gray-normal};
+@value weatherWidgetWidth #{$weather-widget-width};

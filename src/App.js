@@ -6,7 +6,7 @@ import WeatherWidget from './components/weather-widget/weather-widget'
 export default class App extends Component {
     render() {
         return (
-            <div className="App">
+            <div id="app">
                 <WeatherWidget />
             </div>
         );
