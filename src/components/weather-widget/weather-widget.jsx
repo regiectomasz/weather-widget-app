@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
 
-import styles from './weather-widget.scss';
 import * as mock from './weather-widget.mock';
+import /*styles from*/ './weather-widget.style.scss';
 
 export const daysAbbreviation = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export const weatherIconHashMap = {
+	'Snow': 'snowy',
+	'Rain': 'rainy',
+	'Clear': 'sunny',
+	'Clouds': 'cloudy',
+};
 
 export default class WeatherWidget extends Component {
 	render() {
@@ -15,7 +21,7 @@ export default class WeatherWidget extends Component {
 			return (
 				<li className="days-content">
 					<div className="font-weight-bold">{dayName}</div>
-					<span className="icon rainy"/>
+					<span className={`icon ${weatherIconHashMap[dayData.weather[0].main]}`}/>
 					<div>
 						<span className="font-weight-bold">{Math.round(dayData.temp.night)}&deg;</span>
 						&nbsp;

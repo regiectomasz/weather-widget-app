@@ -10,10 +10,10 @@ $widget-font-size-normal: $widget-font-size;
 $widget-font-size-small: 9px;
 
 .widget-panel {
+  padding: $widget-font-size * 2;
   color: $widget-gray-dark;
   font-size: $widget-font-size;
-  padding: $widget-font-size * 2;
-  box-shadow: 0px 8px 60px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 8px 60px 0 rgba(0, 0, 0, .75);
   border-radius: $widget-font-size;
 }
 
@@ -27,17 +27,28 @@ $widget-font-size-small: 9px;
 
   .days-content {
     min-width: 60px;
+    cursor: pointer;
 
-    .active {
+    &.active {
       background-color: $widget-gray-light;
+    }
+
+    div {
+      &:first-child {
+        margin-top: 12px;
+      }
+
+      &:last-child {
+        margin-bottom: 12px;
+      }
     }
   }
 
   .hours-content {
     min-width: 25px;
     background-color: $widget-gray-light;
-    border-left: 1px solid $widget-gray-normal;
     border-right: 1px solid $widget-gray-normal;
+    border-left: 1px solid $widget-gray-normal;
 
     &:first-child {
       border-left: 0;
@@ -53,26 +64,26 @@ $widget-font-size-small: 9px;
   }
 
   .icon {
+    display: block;
     width: 64px;
     height: 64px;
-    display: block;
     background-repeat: no-repeat;
     background-position: center center;
 
     &.cloudy {
-      background-image: url('../../assets/icons/weather/cloudy.png');
+      background-image: url("../../assets/icons/weather/cloudy.png");
     }
 
     &.rainy {
-      background-image: url('../../assets/icons/weather/rainy.png');
+      background-image: url("../../assets/icons/weather/rainy.png");
     }
 
     &.snowy {
-      background-image: url('../../assets/icons/weather/snowy.png');
+      background-image: url("../../assets/icons/weather/snowy.png");
     }
 
     &.sunny {
-      background-image: url('../../assets/icons/weather/sunny.png');
+      background-image: url("../../assets/icons/weather/sunny.png");
     }
   }
 }
@@ -84,7 +95,7 @@ $widget-font-size-small: 9px;
     text-anchor: middle;
   }
 
-  .bar{
+  .bar {
     fill: $widget-gray-normal;
   }
 
@@ -95,7 +106,7 @@ $widget-font-size-small: 9px;
   .grid {
     line {
       stroke: $widget-gray-lighter;
-      stroke-width: 2
+      stroke-width: 2;
     }
   }
 }
