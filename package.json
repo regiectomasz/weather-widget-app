@@ -4,7 +4,6 @@
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
-    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "convict": "^4.4.1",
     "cors": "^2.8.5",
@@ -26,6 +25,7 @@
     "server:dev": "nodemon --w ./server --exec \"babel-node ./server\"",
     "server:debug": "nodemon --inspect ./server --exec \"babel-node ./server\""
   },
+  "proxy": "http://localhost:8080",
   "eslintConfig": {
     "extends": "react-app"
   },
