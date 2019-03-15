@@ -43,7 +43,7 @@ export default class WeatherWidget extends Component {
 	}
 
 	render() {
-		const daysContent = this.state.daily.list.slice(0, 5).map((dayData, index) => {
+		const daysContent = this.state.daily.list.slice(1, 6).map((dayData, index) => {
 			let date = new Date(dayData.dt * 1000); // convert Unix epoch time
 			let dayName = daysAbbreviation[date.getDay()];
 
