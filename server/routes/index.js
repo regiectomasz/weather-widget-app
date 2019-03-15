@@ -1,8 +1,10 @@
 import {Router} from 'express';
+import proxy from 'http-proxy-middleware';
 
-import {mockForecast, mockDaily} from '../mocks/weather.mock';
+import config from '../config';
 
 const router = Router();
+const OWM_CONFIG = config.get('owm');
 
 /**
  * @swagger
@@ -22,7 +24,10 @@ router.get('/info', (req, res/*, next*/) => res.status(200).send({status: 'OK'})
  *      produces:
  *       - "application/json"
  */
-router.get('/daily', (req, res, next) => res.status(200).send(mockDaily));
+router.get('/daily', proxy({
+	target: `https://openweathermap.org/data/2.5/forecast/daily/?appid=${OWM_CONFIG.appid}&id=7530858&units=${OWM_CONFIG.units}`,
+	changeOrigin: true
+}));
 
 /**
  * @swagger
@@ -33,6 +38,9 @@ router.get('/daily', (req, res, next) => res.status(200).send(mockDaily));
  *      produces:
  *       - "application/json"
  */
-router.get('/forecast', (req, res, next) => res.status(200).send(mockForecast));
+router.get('/forecast', proxy({
+	target: `https://openweathermap.org/data/2.5/forecast/?appid=${OWM_CONFIG.appid}&id=7530858&units=${OWM_CONFIG.units}`,
+	changeOrigin: true
+}));
 
 export default router;

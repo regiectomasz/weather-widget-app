@@ -56,9 +56,9 @@ export default class WeatherWidget extends Component {
 					<div className="font-weight-bold">{dayName}</div>
 					<span className={`icon ${weatherIconHashMap[dayData.weather[0].main]}`}/>
 					<div>
-						<span className="font-weight-bold">{Math.round(dayData.temp.night)}&deg;</span>
+						<span className="font-weight-bold">{Math.round(dayData.temp.min)}&deg;</span>
 						&nbsp;
-						<span>{Math.round(dayData.temp.day)}&deg;</span>
+						<span>{Math.round(dayData.temp.max)}&deg;</span>
 					</div>
 				</li>
 			);
@@ -94,8 +94,6 @@ class BarChart extends React.Component {
 		let data = this.props.data;
 		let svgWidth = this.props.width;
 		let svgHeight = this.props.height;
-
-		console.log(this.props.data.map(d => d.main.temp));
 
 		if (data && data.length) {
 

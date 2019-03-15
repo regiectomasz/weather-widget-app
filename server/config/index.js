@@ -29,7 +29,7 @@ const config = convict({
 			default: 'b6907d289e10d714a6e88b30761fae22', // api id from https://openweathermap.org/
 			env: 'OWM_APPID',
 		},
-		unit: {
+		units: {
 			doc: 'Temperature unit',
 			format: ['metric', 'imperial'],
 			default: 'metric',
