@@ -26,6 +26,14 @@ export default class WeatherWidget extends Component {
 		fetch('/api/daily')
 			.then(res => res.json())
 			.then(res => {
+				res.list.forEach(dayData => {
+					let date = new Date(dayData.dt * 1000); // convert Unix epoch time
+					dayData.dayName = daysAbbreviation[date.getDay()];
+				});
+
+				return res;
+			})
+			.then(res => {
 				this.setState({daily: res});
 			});
 
@@ -36,24 +44,37 @@ export default class WeatherWidget extends Component {
 			});
 	}
 
-	changeDay(currentDay) {
-		this.setState(() => {
-			return {currentDay};
-		});
+	componentDidUpdate() {
+		if(this.state.daily.list.length){
+			let dayName = this.props.match.params.dayName;
+
+			if (typeof dayName === 'string' && daysAbbreviation.map(d => d.includes(dayName))) {
+				let indexDay = this.state.daily.list.slice(1, 6).findIndex(dayData => dayData.dayName === dayName);
+
+				if (indexDay >= 0 && indexDay < 5) {
+					this.currentDay = indexDay;
+				}
+			}else{
+				this.changeDay(this.state.daily.list[1].dayName)
+			}
+		}
+	}
+
+	changeDay(dayName) {
+		this.props.history.push(`/forecast5days/${dayName}`);
 	}
 
 	render() {
-		const daysContent = this.state.daily.list.slice(1, 6).map((dayData, index) => {
-			let date = new Date(dayData.dt * 1000); // convert Unix epoch time
-			let dayName = daysAbbreviation[date.getDay()];
+		let dayName = this.props.match.params.dayName;
 
+		const daysContent = this.state.daily.list.slice(1, 6).map(dayData => {
 			let mainClassName = 'days-content';
-			if (this.state.currentDay === index)
+			if (dayName === dayData.dayName)
 				mainClassName += ' active';
 
 			return (
-				<li className={mainClassName} key={dayData.dt} onClick={() => this.changeDay(index)}>
-					<div className="font-weight-bold">{dayName}</div>
+				<li className={mainClassName} key={dayData.dt} onClick={() => this.changeDay(dayData.dayName)}>
+					<div className="font-weight-bold">{dayData.dayName}</div>
 					<span className={`icon ${weatherIconHashMap[dayData.weather[0].main]}`}/>
 					<div>
 						<span className="font-weight-bold">{Math.round(dayData.temp.min)}&deg;</span>
@@ -70,7 +91,7 @@ export default class WeatherWidget extends Component {
 					{daysContent}
 				</ul>
 				<BarChart width={styles.weatherWidgetWidth} height={160}
-						  data={this.state.forecast.list.slice(this.state.currentDay * 8, this.state.currentDay * 8 + 8)}/>
+						  data={this.state.forecast.list.slice(this.currentDay * 8, this.currentDay * 8 + 8)}/>
 			</div>
 		);
 	}

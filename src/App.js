@@ -19,7 +19,7 @@ export default class App extends Component {
 							<Route exact path="/" render={() => (
 								<Redirect to="/forecast5days"/>
 							)}/>
-							<Route path="/forecast5days" component={WeatherWidget}/>
+							<Route path="/forecast5days/:dayName" component={WeatherWidget}/>
 							<Route render={() => (
 								<div>
 									<h3>404 page not found</h3>
