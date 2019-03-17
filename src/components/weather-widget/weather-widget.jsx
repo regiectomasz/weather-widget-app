@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import * as d3 from 'd3';
 
 import styles from './weather-widget.style.scss';
@@ -13,13 +13,7 @@ export const weatherIconHashMap = {
 
 export default class WeatherWidget extends Component {
 	state = {
-		daily: {
-			list: []
-		},
-		forecast: {
-			list: []
-		},
-		currentDay: 0
+		list: []
 	};
 
 	componentDidMount() {
@@ -36,24 +30,16 @@ export default class WeatherWidget extends Component {
 				return res;
 			})
 			.then(res => {
-				this.setState({daily: res});
+				this.setState(res);
 			});
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		console.log(prevProps, prevState, snapshot);
-
-		if(this.state.daily.list.length){
+		if (this.state.list.length) {
 			let dayName = this.props.match.params.dayName;
 
-			if (typeof dayName === 'string' && daysAbbreviation.map(d => d.includes(dayName))) {
-				let indexDay = this.state.daily.list.findIndex(dayData => dayData.dayName === dayName);
-
-				if (indexDay >= 0 && indexDay < 5) {
-					this.currentDay = indexDay;
-				}
-			}else{
-				this.changeDay(this.state.daily.list[1].dayName)
+			if (!daysAbbreviation.includes(dayName)) {
+				this.changeDay(this.state.list[0].dayName);
 			}
 		}
 	}
@@ -65,7 +51,7 @@ export default class WeatherWidget extends Component {
 	render() {
 		let dayName = this.props.match.params.dayName;
 
-		const daysContent = this.state.daily.list.map(dayData => {
+		const daysContent = this.state.list.map(dayData => {
 			let mainClassName = 'days-content';
 			if (dayName === dayData.dayName)
 				mainClassName += ' active';
@@ -99,10 +85,8 @@ class DayBarChart extends React.Component {
 		super(props);
 
 		this.state = {
-			forecast: {
-				list: []
-			}
-		}
+			list: []
+		};
 	}
 
 	componentDidMount() {
@@ -117,7 +101,7 @@ class DayBarChart extends React.Component {
 				return res;
 			})
 			.then(res => {
-				this.setState({forecast: res});
+				this.setState(res);
 			}, this.updateChart);
 	}
 
@@ -128,8 +112,8 @@ class DayBarChart extends React.Component {
 	updateChart() {
 		// TODO: performance update
 		let dayName = this.props.dayName;
-		let dayIndex = this.state.forecast.list.findIndex( hour => hour.dayName === dayName);
-		let data = this.state.forecast.list.slice(dayIndex, dayIndex + 8);
+		let dayIndex = this.state.list.findIndex(hour => hour.dayName === dayName);
+		let data = this.state.list.slice(dayIndex, dayIndex + 8);
 		let svgWidth = this.props.width;
 		let svgHeight = this.props.height;
 

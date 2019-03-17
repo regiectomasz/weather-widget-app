@@ -17,7 +17,10 @@ export default class App extends Component {
 					<div>
 						<Switch>
 							<Route exact path="/" render={() => (
-								<Redirect to="/forecast5days"/>
+								<Redirect to="/forecast5days/today"/>
+							)}/>
+							<Route exact path="/forecast5days" render={() => (
+								<Redirect to="/forecast5days/today"/>
 							)}/>
 							<Route path="/forecast5days/:dayName" component={WeatherWidget}/>
 							<Route render={() => (
