@@ -91,7 +91,7 @@ $weather-widget-width: 320;
 }
 
 .bar-chart {
-  background-color: $widget-gray-light;
+  //background-color: $widget-gray-light;
 
   text {
     text-anchor: middle;
@@ -114,3 +114,4 @@ $weather-widget-width: 320;
 }
 
 @value weatherWidgetWidth #{$weather-widget-width};
+@value widgetGrayLight #{$widget-gray-light};

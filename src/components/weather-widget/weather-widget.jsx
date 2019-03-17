@@ -26,6 +26,8 @@ export default class WeatherWidget extends Component {
 		fetch('/api/daily')
 			.then(res => res.json())
 			.then(res => {
+				res.list = res.list.slice(0, 5);// get 5 days
+
 				res.list.forEach(dayData => {
 					let date = new Date(dayData.dt * 1000); // convert Unix epoch time
 					dayData.dayName = daysAbbreviation[date.getDay()];
@@ -36,20 +38,16 @@ export default class WeatherWidget extends Component {
 			.then(res => {
 				this.setState({daily: res});
 			});
-
-		fetch('/api/forecast')
-			.then(res => res.json())
-			.then(res => {
-				this.setState({forecast: res});
-			});
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		console.log(prevProps, prevState, snapshot);
+
 		if(this.state.daily.list.length){
 			let dayName = this.props.match.params.dayName;
 
 			if (typeof dayName === 'string' && daysAbbreviation.map(d => d.includes(dayName))) {
-				let indexDay = this.state.daily.list.slice(1, 6).findIndex(dayData => dayData.dayName === dayName);
+				let indexDay = this.state.daily.list.findIndex(dayData => dayData.dayName === dayName);
 
 				if (indexDay >= 0 && indexDay < 5) {
 					this.currentDay = indexDay;
@@ -67,7 +65,7 @@ export default class WeatherWidget extends Component {
 	render() {
 		let dayName = this.props.match.params.dayName;
 
-		const daysContent = this.state.daily.list.slice(1, 6).map(dayData => {
+		const daysContent = this.state.daily.list.map(dayData => {
 			let mainClassName = 'days-content';
 			if (dayName === dayData.dayName)
 				mainClassName += ' active';
@@ -90,20 +88,37 @@ export default class WeatherWidget extends Component {
 				<ul className="content">
 					{daysContent}
 				</ul>
-				<BarChart width={styles.weatherWidgetWidth} height={160}
-						  data={this.state.forecast.list.slice(this.currentDay * 8, this.currentDay * 8 + 8)}/>
+				<DayBarChart width={styles.weatherWidgetWidth} height={160} dayName={dayName}/>
 			</div>
 		);
 	}
 }
 
-class BarChart extends React.Component {
+class DayBarChart extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			forecast: {
+				list: []
+			}
+		}
 	}
 
 	componentDidMount() {
-		this.updateChart();
+		fetch('/api/forecast')
+			.then(res => res.json())
+			.then(res => {
+				res.list.forEach(dayData => {
+					let date = new Date(dayData.dt * 1000); // convert Unix epoch time
+					dayData.dayName = daysAbbreviation[date.getDay()];
+				});
+
+				return res;
+			})
+			.then(res => {
+				this.setState({forecast: res});
+			}, this.updateChart);
 	}
 
 	componentDidUpdate() {
@@ -112,7 +127,9 @@ class BarChart extends React.Component {
 
 	updateChart() {
 		// TODO: performance update
-		let data = this.props.data;
+		let dayName = this.props.dayName;
+		let dayIndex = this.state.forecast.list.findIndex( hour => hour.dayName === dayName);
+		let data = this.state.forecast.list.slice(dayIndex, dayIndex + 8);
 		let svgWidth = this.props.width;
 		let svgHeight = this.props.height;
 
@@ -186,9 +203,25 @@ class BarChart extends React.Component {
 			labels.text(datum => new Date(datum.dt * 1000).getHours() + ':00'); // update
 
 			// grid (only vertical)
+			let pool = svg.select('g.grid')
+				.selectAll('rect')
+				.data(data);
+
+			pool.enter().append('rect')
+				.attr('class', 'vertical')
+				.attr('fill', datum => datum.dayName === dayName ? styles.widgetGrayLight : 'transparent')
+				.attr('x', (datum, index) => index * width)
+				.attr('y', 0)
+				.attr('width', width)
+				.attr('height', svgHeight);
+
+			pool.transition()
+				.duration(500)
+				.attr('fill', datum => datum.dayName === dayName ? styles.widgetGrayLight : 'transparent');
+
 			svg.select('g.grid')
 				.selectAll('line.vertical')
-				.data(new Array(data.length - 1))
+				.data(data)
 				.enter().append('line')
 				.attr('class', 'vertical')
 				.attr('x1', (datum, index) => ((index + 1) * width))
